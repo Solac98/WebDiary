@@ -8,7 +8,7 @@ import { ADD_CALENDAR_REQUEST, LOAD_CALENDAR_REQUEST, REMOVE_CALENDAR_REQUEST } 
 const AllCalendar = () => {
     const dispatch = useDispatch();
     const{ isLoggedIn} = useSelector((state) => state.user);
-    const { mainData } = useSelector((state) => state.calendar);
+    const { calendar } = useSelector((state) => state.calendar);
     
     useEffect(() => {
         if(!isLoggedIn){
@@ -19,6 +19,10 @@ const AllCalendar = () => {
         });
     }, [isLoggedIn]);
 
+    if (!isLoggedIn) {
+      return '내 정보 로딩중...';
+  }
+
     const [text, setText] = useState('');
     const [selectDate, setSelectDate] = useState('2021-01-01');
 
@@ -26,9 +30,8 @@ const AllCalendar = () => {
       setText(e.target.value);
     }, [text]);
 
-    //더미 데이터 
     function getListData(value) { 
-        let listData = mainData.filter((v) => v.date === value);
+        let listData = calendar.filter((v) => v.date === value);
         return listData || [];
       }
 
@@ -53,7 +56,7 @@ const AllCalendar = () => {
       ))}
     </ul>
     );
-  }, [mainData]);
+  }, [calendar]);
     const onChangeCal = (date, dateString) => {
       setSelectDate(dateString);
     }
@@ -66,11 +69,12 @@ const AllCalendar = () => {
         type: ADD_CALENDAR_REQUEST,
         data: plus,
       });
-      console.log(mainData);
-    }), [ selectDate, text, mainData]);
+      console.log(calendar);
+    }), [ selectDate, text, calendar]);
     //달력에 추가한거 삭제
     const onDelete = useCallback((() => {
-      const deleteData = mainData.filter((e) => e.date === selectDate)[0];
+      const deleteData = calendar.filter((e) => e.date === selectDate && e.content === text);
+      console.log(deleteData);
       dispatch({
         type: REMOVE_CALENDAR_REQUEST,
         data: {
@@ -78,7 +82,7 @@ const AllCalendar = () => {
           content: deleteData,
         },
       });
-    }), [selectDate, mainData,/*tempData*/, text]);
+    }), [selectDate, calendar,/*tempData*/, text]);
 
     return(
         <>

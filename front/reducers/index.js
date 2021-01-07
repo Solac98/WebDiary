@@ -1,7 +1,10 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
+
 import user from './user';
 import calendar from './calendar';
+import bucket from './bucket';
+import diary from './diary';
 
 const rootReducer = combineReducers({
     index: (state ={}, action) => {
@@ -15,6 +18,8 @@ const rootReducer = combineReducers({
     },
     user,
     calendar,
+    bucket,
+    diary,
 });
 
 export default rootReducer;

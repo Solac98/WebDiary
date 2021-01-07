@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import Link from 'next/link';
 import { Menu, Input, Row, Col} from 'antd';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 import Login from '../pages/login';
 
@@ -18,6 +20,8 @@ const CustomDiv = styled.div`
 `;
 
 const AppLayout = ({ children }) => {
+
+    const { isLoggedIn } = useSelector((state) => state.user);
     return (
         <CustomDiv>
             <div style={{width: '95%', margin: '0px auto'}}>
@@ -26,13 +30,13 @@ const AppLayout = ({ children }) => {
                         <Link href='/'><a>SolarSeeds</a></Link>
                     </Menu.Item>
                     <Menu.Item>
-                        < Link href='/'><a>My Diary</a></Link>
+                        { isLoggedIn ? < Link href='/diary'><a>My Diary</a></Link> : < Link href='/login'><a>My Diary</a></Link>}
                     </Menu.Item>
                     <Menu.Item>
-                        <Link href='/allcalendar'><a>Calendar</a></Link>
+                        { isLoggedIn?  <Link href='/allcalendar'><a>Calendar</a></Link> : <Link href='/login'><a>Calendar</a></Link>}
                     </Menu.Item>
                     <Menu.Item>
-                        <Link href='/profile'><a>Profile</a></Link>
+                        { isLoggedIn? <Link href='/profile'><a>Profile</a></Link> : <Link href='/login'><a>Profile</a></Link> }
                     </Menu.Item>
                 </Menu>
                 {/* gutter는 컨텐츠 사이 갭 마진이라 생각하자.*/}

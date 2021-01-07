@@ -1,15 +1,9 @@
 import produce from '../util/produce';
 
-//user 더미 데이터
-const dummyCalendar = [{ id: 1, date: '2021-01-08', type: 'success', content: 'This is warning event.' },
-{ id: 2, date: '2021-01-08', type: 'success', content: 'This is usual event.' },
-{ id: 3, date: '2021-01-10', type: 'success', content: 'This is warning event.' },
-{ id: 4, date: '2021-01-10', type: 'success', content: 'This is usual event.' },
-{ id: 5, date: '2021-01-10', type: 'success', content: 'This is error event.' },
-{ id: 6, date: '2021-02-10', type: 'success', content: '호호호.' },];
+//calender 더미 데이터
 
 export const initialState = {
-    mainData: [{ id: 1, date: '2021-01-08', type: 'success', content: 'This is warning event.' },
+    calendar: [{ id: 1, date: '2021-01-08', type: 'success', content: 'This is warning event.' },
     { id: 2, date: '2021-01-08', type: 'success', content: 'This is usual event.' },
     { id: 3, date: '2021-01-10', type: 'success', content: 'This is warning event.' },
     { id: 4, date: '2021-01-10', type: 'success', content: 'This is usual event.' },
@@ -36,23 +30,20 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE'; // 액션의 이름
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
         case LOAD_CALENDAR_REQUEST:{
-            console.log("LOAD_CALENDAR_REQUEST / Load - Calendar");
-            draft.mainData = draft.mainData;
+            draft.calendar = draft.calendar;
             break;
         }
         case ADD_CALENDAR_REQUEST:{
-            console.log("ADD_CALENDAR_REQUEST / Add - Calendar");
-            draft.mainData.push(action.data);
+            draft.calendar.push(action.data);
             break;
         }
         case REMOVE_CALENDAR_REQUEST:{
-            console.log("REMOVE_CALENDAR_REQUEST / Remove - Calendar");
-            draft.mainData = draft.mainData.filter((v) => v.id !== action.data.content.id);
+            draft.calendar = draft.calendar.filter((v) => v.id !== action.data.content[0].id);
             break;
         }
         case LOG_OUT_REQUEST:{
             console.log("LOG_OUT_REQUEST");
-            draft.mainData = null;
+            draft.calenda = null;
             break;
         }
     }

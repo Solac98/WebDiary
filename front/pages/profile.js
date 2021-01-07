@@ -27,6 +27,10 @@ const Profile = () => {
         }
     }, [isLoggedIn]);
 
+    if (!isLoggedIn) {
+        return '내 정보 로딩중...';
+    }
+
     const [value, setValue] = useState(false);
     //정보 수정 클릭
     const onClickUser = useCallback(() => {

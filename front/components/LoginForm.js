@@ -41,7 +41,7 @@ const LoginForm = () => {
         <FormWrapper onFinish={onSubmitForm}>
                 <label htmlFor="user-email">이메일</label>
                 <br />
-                <Input name="user-email" value={email} type="email" onChange={onChangeEmail} required />
+                <Input placeholder="example@happy.com" name="user-email" value={email} type="email" onChange={onChangeEmail} required />
                 <label htmlFor="user-password">비밀번호</label>
                 <br />
                 <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
