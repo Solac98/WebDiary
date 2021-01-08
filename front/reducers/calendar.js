@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         }
         case LOG_OUT_REQUEST:{
             console.log("LOG_OUT_REQUEST");
-            draft.calenda = null;
+            //draft.calenda = null;
             break;
         }
     }

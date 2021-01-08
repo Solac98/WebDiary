@@ -6,16 +6,32 @@ const dummyData = [{
     id: 1,
     date: "2021-01-01",
     title: "오랜만에 공장알바 1일차",
-    content: '다 이 어 트'
+    content: '다 이 어 트',
+    image: [{
+        id: 1,
+        src: "https://cdn.mediasr.co.kr/news/photo/202006/60497_30779_2227.jpg",
+    }, {
+        id: 2,
+        src: "https://cdn.mediasr.co.kr/news/photo/202006/60497_30779_2227.jpg",
+    }],
 }, {
     id: 2,
     date: "2021-01-08",
     title: "ㅏㅇ아ㅏㅇ아아아ㅏ아",
-    content: '미칠가기ㅣ닝미이밍'
+    content: '미칠가기ㅣ닝미이밍',
+    image: [{
+        id: 1,
+        src: "https://cdn.mediasr.co.kr/news/photo/202006/60497_30779_2227.jpg",
+    }, {
+        id: 2,
+        src: "http://image.cine21.com/resize/cine21/person/2020/0610/16_24_15__5ee08a9f02f1c[W680-].JPG"
+    }]
 }]
 
 export const initialState = {
-    post: {},
+    post: {
+        image: [],
+    },
 };
 
 export const LOAD_DIARY_REQUEST = 'LOAD_DIARY_REQUEST'; // 액션의 이름
@@ -40,10 +56,15 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             //현재는 더미데이터에서 찾아서 넣고있지만 디비 작업시
             //백엔드에서 해당 데이터 찾아와 바로 넣기
             const tempdata = dummyData.filter((v) => v.date === action.data)[0];
+            if(!tempdata){
+                alert("이 날의 추억은 남기지 않으셨네요 :(");
+                break;
+            }
             draft.post.id = tempdata.id;
             draft.post.title = tempdata.title;
             draft.post.content = tempdata.content;
             draft.post.date = tempdata.date;
+            draft.post.image = tempdata.image;
             break;
         }
         case ADD_DIARY_REQUEST:{
@@ -58,7 +79,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         }
         case LOG_OUT_REQUEST:{
             console.log("LOG_OUT_REQUEST");
-            draft.post = null;
+            draft.post = {
+                image: [],
+            };
             break;
         }
     }

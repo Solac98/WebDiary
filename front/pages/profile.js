@@ -8,6 +8,7 @@ import EditBucket from '../components/EditBucket';
 import { useSelector, useDispatch} from 'react-redux';
 import Router from 'next/router';
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
 const CenterDiv = styled.div`
     width: 75%;
     margin : 0 auto;
@@ -38,6 +39,9 @@ const Profile = () => {
     }, [value]);
     //버킷리스트 수정 클릭
     const onClickBucket = useCallback((e) => {
+        dispatch({
+            type: LOAD_BUCKET_REQUEST,
+        });
         setValue(true);
     }, [value]);
     //로그아웃 클릭

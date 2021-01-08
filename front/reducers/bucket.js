@@ -2,6 +2,7 @@ import produce from '../util/produce';
 
 //bucket 더미 데이터
 
+
 export const initialState = {
     bucket: [{
         id: 1,
@@ -47,7 +48,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         }
         case LOG_OUT_REQUEST:{
             console.log("LOG_OUT_REQUEST");
-            draft.bucket = null;
+            //draft.bucket = null;
             break;
         }
     }

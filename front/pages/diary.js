@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
-import { Row, Col, DatePicker, Space, Card, Modal, Button, Input } from 'antd';
+import { Row, Col, DatePicker, Space, Card, Modal, Button, Input, Image } from 'antd';
 import Router from 'next/router';
 import { ADD_DIARY_REQUEST, LOAD_DIARY_REQUEST } from '../reducers/diary';
 
@@ -76,7 +76,7 @@ const Diary = () => {
 
     //Find Post
     const onFindPost = useCallback(() => {
-        const date = selectDate;        
+        const date = selectDate;
         if(date === "날짜 선택!"){
            return alert("날짜를 선택하세요!");
         }
@@ -118,8 +118,11 @@ const Diary = () => {
                                 value={addContent}
                                 />
                         </Modal>
-                        <Card style={{margin: '20px'}} title={post.title} bordered={false}>
+                        <Card style={{margin: '20px', overflow: 'scroll', height: '550px'}} title={post.title} bordered={false}>
                             <p>{post.content}</p>
+                            <Image.PreviewGroup>
+                                {post.image.map((v) => <Image witdh="100%" src={v.src} />)}
+                            </Image.PreviewGroup>
                         </Card>
                     </Col>
                     <Col xs={24} md={6}>
