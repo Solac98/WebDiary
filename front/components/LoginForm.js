@@ -1,8 +1,8 @@
 import { Form, Button, Input} from 'antd';
 import styled from 'styled-components';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
 const ButtonWrapper = styled.div`
     margin-top: 10px;
@@ -19,9 +19,17 @@ margin: -100px 0 0 -150px;
 const LoginForm = () => {
 
     const dispatch = useDispatch();
+    const { isLogLoading, isLogError } = useSelector((state) => state.user);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    //LogIn Error Message
+    useEffect(() => {
+        if(isLogError){
+            alert(isLogError);
+        }
+    }, [isLogError]);
 
     const onChangeEmail = useCallback((e) => {
         setEmail(e.target.value);
@@ -31,10 +39,11 @@ const LoginForm = () => {
     }, [password]);
 
     const onSubmitForm = useCallback(() => {
-        console.log(email, password);
+        const user = { email: email, password: password};
         //로그인 요청(리덕서, 사가(예정))
         dispatch({
             type: LOG_IN_REQUEST,
+            data: user,
         });
     }, [email, password]);
     return (
@@ -46,7 +55,7 @@ const LoginForm = () => {
                 <br />
                 <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
             <ButtonWrapper>
-                <Button type="primary" htmlType="submit" /*loading={logInLoading}*/>로그인</Button>
+                <Button type="primary" htmlType="submit" loading={isLogLoading} >로그인</Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
         </FormWrapper>

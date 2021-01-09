@@ -39,6 +39,7 @@ const EditBucket = () => {
             type: ADD_BUCKET_REQUEST,
             data,
         });
+        setContent('');
     }, [content]);
 
     //Delete Button
@@ -53,6 +54,7 @@ const EditBucket = () => {
             data: deleteData,
         });
         }
+        setContent('');
     }, [content]);
 
     return (

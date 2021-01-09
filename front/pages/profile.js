@@ -45,11 +45,12 @@ const Profile = () => {
         setValue(true);
     }, [value]);
     //로그아웃 클릭
-    const onLogOut = () => {
+    const onLogOut = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
-    }
+        Router.push('/');
+    }, []);
 
     return (
         <>
