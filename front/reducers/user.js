@@ -1,4 +1,3 @@
-import { Router } from 'next/router';
 import produce from '../util/produce';
 
 //user 더미 데이터

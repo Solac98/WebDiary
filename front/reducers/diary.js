@@ -49,6 +49,11 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case REMOVE_IMAGE:
             draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
             break;
+        case LOG_OUT_SUCCESS://Logout - Reset DiaryData
+            draft.post = {
+                Images: [],
+            };
+            draft.imagePaths = [];
         case UPLOAD_IMAGES_REQUEST: {
             draft.uploadImagesLoading = true;
             draft.uploadImagesDone = false;
