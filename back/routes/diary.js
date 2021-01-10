@@ -48,6 +48,12 @@ router.post('/load', async (req, res, next) => {
 //Add
 router.post('/', upload.none(), async (req, res, next) => {
     try {
+        const exDiary = await Diary.findOne({
+            where: { date: req.body.date },
+        });
+        if(exDiary){
+            return res.status(401).send('해당일에는 이미 글을 작성하였습니다.');
+        }
         const diary = await Diary.create({
             title: req.body.title,
             content: req.body.content,
@@ -80,4 +86,23 @@ router.post('/images', upload.array('image'), (req, res, next) => {
     console.log(req.files);
     res.json(req.files.map((v) => v.filename));
 });
+//Delete Diary
+router.delete('/:deleteDate', async (req, res, next) => {
+    try {
+        const exDiary = await Diary.findOne({
+            where: { date: req.params.deleteDate },
+        });
+        if(!exDiary){
+            return res.status(401).send("해당일에 게시글이 없습니다.");
+        }
+        await Diary.destroy({
+            where: { date: req.params.deleteDate },
+        });
+        res.status(200).send("게시글 삭제가 완료되었습니다.");
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = router;

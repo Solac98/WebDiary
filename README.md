@@ -14,4 +14,4 @@ README 간단히 작성
 
 - 2021.01.09.토 - Redux-Saga 적용 및 액션(LogIn, LogOut, SignUp) 생성, BackEnd 서버 구현, Sequelize활용하여 DataBase연결 및 User모델 생성(email, password, nickname) 그리고 bcrypt활용하여 password 암호화 , passport활용한 Log(In Out)구현, 회원 가입 구현
 
-- 2021.01.10.일 - 글 작성(글, 이미지), 조회 구현 / front( reducer, saga-Action, page-diary ) / back( Diary-Image모델 생성, User-Diary-Image관계 형성, DairyRouter, Image저장 ), 이미지 DB가 아닌 서버에 저장한 이유는 DB에 저장하면 부담이 크기 때문. 따라서 서버에 저장하고 DB에는 해당 주소를 저장.
+- 2021.01.10.일 - 글 작성(글, 이미지), 조회, 삭제 구현 / front( reducer, saga-Action, page-diary ) / back( Diary-Image모델 생성, User-Diary-Image관계 형성, DairyRouter, Image저장 ), 이미지 DB가 아닌 서버에 저장한 이유는 DB에 저장하면 부담이 크기 때문. 따라서 서버에 저장하고 DB에는 해당 주소를 저장.

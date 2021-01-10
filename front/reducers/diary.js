@@ -18,7 +18,16 @@ export const initialState = {
     loadDiaryLoading: false,
     loadDiaryDone: false,
     loadDiaryError: null,
+
+    deleteDiaryLoading: false,
+    deleteDiaryDone: false,
+    deleteDiaryError: null,
 };
+
+export const DELETE_DIARY_REQUEST = 'DELETE_DIARY_REQUEST'; // 액션의 이름
+export const DELETE_DIARY_SUCCESS = 'DELETE_DIARY_SUCCESS'; // 액션의 이름
+export const DELETE_DIARY_FAILURE = 'DELETE_DIARY_FAILURE';
+export const DELETE_DIARY_RESET = 'DELETE_DIARY_RESET';
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST'; // 액션의 이름
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS'; // 액션의 이름
@@ -46,6 +55,29 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 //현재는 REQUEST에서 SUCCESS역활까지 하고있음, saga작성 시 구분하기!
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
+        case DELETE_DIARY_RESET: {
+            draft.deleteDiaryDone = false;
+        }
+        case DELETE_DIARY_REQUEST: {
+            draft.deleteDiaryLoading = true;
+            draft.deleteDiaryDone = false;
+            draft.deleteDiaryError = null;
+            break;
+        }
+        case DELETE_DIARY_SUCCESS: {
+            draft.post = {
+                Images: [],
+            };
+            draft.imagePaths = [];
+            draft.deleteDiaryLoading = false;
+            draft.deleteDiaryDone = true;
+            break;
+        }
+        case DELETE_DIARY_FAILURE: {
+            draft.deleteDiaryLoading = false;
+            draft.deleteDiaryError = action.error;
+            break;
+        }
         case REMOVE_IMAGE:
             draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
             break;
@@ -64,7 +96,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.imagePaths = action.data;
             draft.uploadImagesLoading = false;
             draft.uploadImagesDone = true;
-        break;
+            break;
         }
         case UPLOAD_IMAGES_FAILURE: {
             draft.uploadImagesLoading = false;
