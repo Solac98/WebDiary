@@ -20,6 +20,7 @@ const rootReducer = combineReducers({
     calendar,
     bucket,
     diary,
+    calendar,
 });
 
 export default rootReducer;

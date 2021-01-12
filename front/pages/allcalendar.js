@@ -8,7 +8,7 @@ import { ADD_CALENDAR_REQUEST, LOAD_CALENDAR_REQUEST, REMOVE_CALENDAR_REQUEST } 
 const AllCalendar = () => {
     const dispatch = useDispatch();
     const{ isLoggedIn} = useSelector((state) => state.user);
-    const { calendar } = useSelector((state) => state.calendar);
+    const { calendar, addCalendarLoading } = useSelector((state) => state.calendar);
     
     useEffect(() => {
         if(!isLoggedIn){
@@ -51,7 +51,7 @@ const AllCalendar = () => {
       <ul style={{paddingInlineStart: '0'}} className="events">
       {listData.map(item => (
         <li style={{listStyle: 'none'}} key={item.content}>
-          <Badge status={item.type} text={item.content} />
+          <Badge status="success" text={item.content} />
         </li>
       ))}
     </ul>
@@ -62,26 +62,28 @@ const AllCalendar = () => {
     }
     //달력에 추가
     const onSubmit = useCallback((() => {
-      const plus = { id: 7, date: selectDate, type: 'success', content: text};
+      const plus = { date: selectDate, type: 'success', content: text};
       //임시로 id인덱스 부여, 디비 작업시 id 자동
       console.log(plus);
       dispatch({
         type: ADD_CALENDAR_REQUEST,
         data: plus,
       });
-      console.log(calendar);
     }), [ selectDate, text, calendar]);
     //달력에 추가한거 삭제
     const onDelete = useCallback((() => {
       const deleteData = calendar.filter((e) => e.date === selectDate && e.content === text);
-      console.log(deleteData);
-      dispatch({
-        type: REMOVE_CALENDAR_REQUEST,
-        data: {
-          date: selectDate,
-          content: deleteData,
-        },
-      });
+      if(deleteData.length){
+        dispatch({
+          type: REMOVE_CALENDAR_REQUEST,
+          data: {
+            id: deleteData[0].id,
+          },
+        });
+      } else {
+        alert("날짜 또는 데이터를 확인하세요");
+      }
+      
     }), [selectDate, calendar,/*tempData*/, text]);
 
     return(
@@ -95,7 +97,7 @@ const AllCalendar = () => {
                   <DatePicker style={{marginTop: '10px'}} placeholder={selectDate} onChange={onChangeCal} />
                 </Space>
                 <Input placeholder="달력에 기록하세요!" style={{width: '300px', marginTop: '10px'}} name="text" value={text} type="text" onChange={onChangeText} required />
-                <Button style={{marginTop: '10px'}} onClick={onSubmit}>입력</Button>
+                <Button style={{marginTop: '10px'}} loading={addCalendarLoading} onClick={onSubmit}>입력</Button>
                 <Button style={{marginTop: '10px'}} onClick={onDelete}>삭제</Button>
                 <Calendar dateCellRender={dateCellRender} onPanelChange={onPanelChange} onSelect={onSelect}/>
             </AppLayout>}

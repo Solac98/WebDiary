@@ -16,8 +16,6 @@ const CustomDiv = styled.div`
 `;
 
 const Login = () => {
-    //로그인 성공시, 백엔드 로그인 작성 시 
-    //해당부분에서 처리할 에정, 삭제 예정
     const{ isLoggedIn } = useSelector((state) => state.user);
     useEffect(() => {
         if(isLoggedIn){

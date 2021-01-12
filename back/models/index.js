@@ -8,6 +8,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 db.User = require('./user')(sequelize, Sequelize);
 db.Diary = require('./diary')(sequelize, Sequelize);
 db.Image = require('./image')(sequelize, Sequelize);
+db.Calendar = require('./calendar')(sequelize, Sequelize);
 
 // 각 모델에서 설정한 associate 연결
 Object.keys(db).forEach(modelName => {
