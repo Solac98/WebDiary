@@ -18,4 +18,6 @@ README 간단히 작성
 
 - 2021.01.10.일 - 글 작성(글, 이미지), 조회, 삭제 구현 / front( reducer, saga-Action, page-diary ) / back( Diary-Image모델 생성, User-Diary-Image관계 형성, DairyRouter, Image저장 ), 이미지 DB가 아닌 서버에 저장한 이유는 DB에 저장하면 부담이 크기 때문. 따라서 서버에 저장하고 DB에는 해당 주소를 저장.
 
-- 2021.01.12.화 = 캘린더 일(Day)이벤트 조회 추가 삭제 구현 / front( reducer, saga-Action, page-allcalendar(수정) ) / back( Calendar모델 생성, User-Calendar관계 형성, CalendarRouter)
+- 2021.01.12.화 - 캘린더 일(Day)이벤트 조회 추가 삭제 구현 / front( reducer, saga-Action, page-allcalendar(수정) ) / back( Calendar모델 생성, User-Calendar관계 형성, CalendarRouter)
+
+- 2021.01.13.수 - 버킷리스트 조회 추가 삭제 구현 / front( reducer, saga-Action, component-EditBucket(수정) ) / back( Bucket모델 생성, User-Bucket관계 형성, BucketRouter)

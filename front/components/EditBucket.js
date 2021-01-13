@@ -32,9 +32,9 @@ const EditBucket = () => {
         setContent(e.target.value);
     }, [content]);
 
-    //Add Buton
+    //Add Bucket
     const onAddClick = useCallback(() => {
-        const data = {id: 4, content: content};
+        const data = { content: content };
         dispatch({
             type: ADD_BUCKET_REQUEST,
             data,
@@ -42,18 +42,18 @@ const EditBucket = () => {
         setContent('');
     }, [content]);
 
-    //Delete Button
+    //Delete Bucket
     const onDeleteClick = useCallback(() => {
         //find
         const deleteData = bucket.filter((e) => e.content === content)[0];
-        console.log(bucket, deleteData);
-        //not data
         if(deleteData){
             dispatch({
             type: REMOVE_BUCKET_REQUEST,
-            data: deleteData,
+            data: deleteData.id,
         });
-        }
+    } else {
+        alert("입력 또는 버킷리스트를 확인하세요");
+    }
         setContent('');
     }, [content]);
 

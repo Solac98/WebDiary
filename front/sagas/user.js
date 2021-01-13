@@ -2,6 +2,7 @@ import { all, delay, fork, put, takeLatest, call} from 'redux-saga/effects';
 import axios from 'axios';
 
 import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_FAILURE, LOG_OUT_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_FAILURE, SIGN_UP_SUCCESS } from '../reducers/user';
+import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
 
 
 function logInAPI(data) {
@@ -14,6 +15,10 @@ function* logIn(action){
         yield put({
             type: LOG_IN_SUCCESS,
             data: result.data,
+        });
+        //Bucket Request
+        yield put({
+            type: LOAD_BUCKET_REQUEST,
         });
     } catch(err) {
         console.error(err);

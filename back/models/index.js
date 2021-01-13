@@ -9,6 +9,7 @@ db.User = require('./user')(sequelize, Sequelize);
 db.Diary = require('./diary')(sequelize, Sequelize);
 db.Image = require('./image')(sequelize, Sequelize);
 db.Calendar = require('./calendar')(sequelize, Sequelize);
+db.Bucket = require('./bucket')(sequelize, Sequelize);
 
 // 각 모델에서 설정한 associate 연결
 Object.keys(db).forEach(modelName => {

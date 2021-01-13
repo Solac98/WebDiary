@@ -9,6 +9,7 @@ const cors = require('cors');
 const userRouter = require('./routes/user');
 const diaryRouter = require('./routes/diary');
 const calendarRouter = require('./routes/calendar');
+const bucketRouter = require('./routes/bucket');
 const path = require('path');
 
 dotenv.config();
@@ -45,6 +46,7 @@ app.use(passport.session());
 app.use('/user', userRouter);
 app.use('/diary', diaryRouter);
 app.use('/calendar', calendarRouter);
+app.use('/bucket', bucketRouter);
 
 app.listen(3065, () => {
     console.log("3065 Port Opened")

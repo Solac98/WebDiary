@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = (db) => {
         db.User.hasMany(db.Diary);
         db.User.hasMany(db.Calendar);
+        db.User.hasMany(db.Bucket);
     };
     return User;
 }

@@ -9,9 +9,7 @@ router.get('/', async (req, res, next) => {
         const calendar = await Calendar.findAll({
             where: { UserId: req.user.id},
         });
-        if(calendar){
-            return res.status(201).json(calendar);
-        }
+        res.status(201).json(calendar);
     } catch (error) {
         console.error(error);
         next(error);
@@ -49,7 +47,7 @@ router.delete('/:id', async (req, res, next) => {
             });
             return res.status(201).json(exCalender); 
         }
-        
+        res.status(403).send("데이터가 존재하지 않습니다.");
     } catch (error) {
         console.error(error);
         next(error);

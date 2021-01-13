@@ -20,14 +20,14 @@ const Home = () => {
     const{ isLoggedIn, user } = useSelector((state) => state.user);
     const { bucket } = useSelector((state) => state.bucket);
     const dispatch = useDispatch();
-    //Load Bucket Data
+    /*//Load Bucket Data
     useEffect(() => {
         if(isLoggedIn){
             dispatch({
                 type: LOAD_BUCKET_REQUEST,
             });
         }
-    });
+    }, [isLoggedIn, bucket] );*/
 
     //LogOut Request
     const onLogOut = useCallback(() => {
