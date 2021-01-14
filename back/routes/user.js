@@ -62,4 +62,31 @@ router.post('/signup', async (req, res, next) => {
     }
 });
 
+//Update
+router.put('/update', async (req, res, next) => {
+    try {
+        const exUser = await User.findOne({
+            where: { id: req.user.id },
+        });
+        if(exUser){
+            await User.update({
+                nickname: req.body.nickname,
+            }, {
+                where: { id: req.user.id},
+            });
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id},
+                attributes: {
+                    exclude: ['password'],
+                },
+            });
+            return res.status(201).json(fullUserWithoutPassword);
+        }
+        res.status(401).send("사용자를 찾지 못하였습니다.");
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = router;

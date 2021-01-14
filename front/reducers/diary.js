@@ -7,6 +7,12 @@ export const initialState = {
         Images: [],
     },
     imagePaths: [],
+    removeImage: [],
+
+    updateDiaryLoading: false,
+    updateDiaryDone: false,
+    updateDiaryError: null,
+
     uploadImagesLoading: false,
     uploadImagesDone: false,
     uploadImagesError: null,
@@ -23,6 +29,12 @@ export const initialState = {
     deleteDiaryDone: false,
     deleteDiaryError: null,
 };
+
+export const UPDATE_DIARY_REQUEST = 'UPDATE_DIARY_REQUEST'; // 액션의 이름
+export const UPDATE_DIARY_SUCCESS = 'UPDATE_DIARY_SUCCESS'; // 액션의 이름
+export const UPDATE_DIARY_FAILURE = 'UPDATE_DIARY_FAILURE'; // 액션의 이름
+
+export const UPDATE_REMOVE_IMAGE = "UPDATE_REMOVE_IMAGE";
 
 export const DELETE_DIARY_REQUEST = 'DELETE_DIARY_REQUEST'; // 액션의 이름
 export const DELETE_DIARY_SUCCESS = 'DELETE_DIARY_SUCCESS'; // 액션의 이름
@@ -41,10 +53,6 @@ export const ADD_DIARY_REQUEST = 'ADD_DIARY_REQUEST'; // 액션의 이름
 export const ADD_DIARY_SUCCESS = 'ADD_DIARY_SUCCESS'; // 액션의 이름
 export const ADD_DIARY_FAILURE = 'ADD_DIARY_FAILURE'; // 액션의 이름
 
-export const REMOVE_DIARY_REQUEST = 'REMOVE_DIARY_REQUEST'; // 액션의 이름
-export const REMOVE_DIARY_SUCCESS = 'REMOVE_DIARY_SUCCESS'; // 액션의 이름
-export const REMOVE_DIARY_FAILURE = 'REMOVE_DIARY_FAILURE'; // 액션의 이름
-
 export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST'; // 액션의 이름
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS'; // 액션의 이름
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE'; // 액션의 이름
@@ -55,6 +63,25 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 //현재는 REQUEST에서 SUCCESS역활까지 하고있음, saga작성 시 구분하기!
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
+        case UPDATE_DIARY_REQUEST:{
+            draft.updateDiaryLoading = true;
+            draft.updateDiaryDone = false;
+            draft.updateDiaryError = null;            
+            break;
+        }
+        case UPDATE_DIARY_SUCCESS:{
+            draft.updateDiaryLoading = false;
+            draft.updateDiaryDone = true;
+            draft.post = action.data;
+            draft.removeImage = [];
+            draft.imagePaths = [];
+            break;
+        }
+        case UPDATE_DIARY_FAILURE:{
+            draft.updateDiaryLoading = false;
+            draft.updateDiaryError = action.error;
+            break;
+        }
         case DELETE_DIARY_RESET: {
             draft.deleteDiaryDone = false;
         }
@@ -137,10 +164,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.addDiaryError = action.error;
             break;
         }
-        case REMOVE_DIARY_REQUEST:{
-            //현재는 더미데이터에서 삭제하지만 디비 작업시 디비에서 삭제
-            draft.dummyData = dummyData.post.filter((v) => v.id !== action.data.id);
-            break;
+        case UPDATE_REMOVE_IMAGE: {
+            draft.removeImage.push(action.data);
         }
     }
 })

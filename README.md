@@ -21,3 +21,4 @@ README 간단히 작성
 - 2021.01.12.화 - 캘린더 일(Day)이벤트 조회 추가 삭제 구현 / front( reducer, saga-Action, page-allcalendar(수정) ) / back( Calendar모델 생성, User-Calendar관계 형성, CalendarRouter)
 
 - 2021.01.13.수 - 버킷리스트 조회 추가 삭제 구현 / front( reducer, saga-Action, component-EditBucket(수정) ) / back( Bucket모델 생성, User-Bucket관계 형성, BucketRouter)
+- 2021.01.14.목 - 업데이트 구현(다이어리 + 이미지, 사용자 정보) / front( reducer, saga-Action, page-diary(수정), component-EditUser(수정) ) / back( router.update( Diary, User )생성 ) / Create Read Update Delete 구현 완료.

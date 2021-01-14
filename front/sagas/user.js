@@ -1,7 +1,7 @@
 import { all, delay, fork, put, takeLatest, call} from 'redux-saga/effects';
 import axios from 'axios';
 
-import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_FAILURE, LOG_OUT_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_FAILURE, SIGN_UP_SUCCESS } from '../reducers/user';
+import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_FAILURE, LOG_OUT_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_FAILURE, SIGN_UP_SUCCESS, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE } from '../reducers/user';
 import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
 
 
@@ -65,6 +65,25 @@ function* signUp(action){
     }
 }
 
+function upDateAPI(data) {
+    return axios.put('/user/update', data);
+}
+
+function* upDate(action) {
+    try {
+        const result = yield call(upDateAPI, action.data);
+        yield put({
+            type: UPDATE_USER_SUCCESS,
+            data: result.data,
+        });
+    } catch (error) {
+        yield put({
+            type: UPDATE_USER_FAILURE,
+            error: error.response.data,
+        });
+    }
+}
+
 // LogIn
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -77,6 +96,10 @@ function* watchLogOut() {
 function* watchSignUp() {
     yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
+//Update
+function* watchUpdate() {
+    yield takeLatest(UPDATE_USER_REQUEST, upDate);
+}
 
 
 export default function* usersSaga() {
@@ -84,5 +107,6 @@ export default function* usersSaga() {
         fork(watchLogIn),
         fork(watchLogOut),
         fork(watchSignUp),
+        fork(watchUpdate),
     ]);
 }

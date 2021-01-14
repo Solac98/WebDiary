@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { all, fork, put, takeLatest, throttle, call} from 'redux-saga/effects';
-import { ADD_DIARY_REQUEST, ADD_DIARY_SUCCESS, ADD_DIARY_FAILURE, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, LOAD_DIARY_REQUEST, LOAD_DIARY_SUCCESS, LOAD_DIARY_FAILURE, DELETE_DIARY_REQUEST, DELETE_DIARY_SUCCESS, DELETE_DIARY_FAILURE } from '../reducers/diary';
+import { ADD_DIARY_REQUEST, ADD_DIARY_SUCCESS, ADD_DIARY_FAILURE, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, LOAD_DIARY_REQUEST, LOAD_DIARY_SUCCESS, LOAD_DIARY_FAILURE, DELETE_DIARY_REQUEST, DELETE_DIARY_SUCCESS, DELETE_DIARY_FAILURE, UPDATE_DIARY_REQUEST, UPDATE_DIARY_SUCCESS, UPDATE_DIARY_FAILURE } from '../reducers/diary';
 
 function uplodaImagesAPI(data){
     return axios.post('/diary/images', data);
@@ -37,6 +37,25 @@ function* addDiary(action){
         console.error(error);
         yield put({
             type: ADD_DIARY_FAILURE,
+            error: error.response.data,
+        });
+    }
+}
+
+function updateDiaryAPI(data){
+    return axios.put('/diary/update', data);
+}
+
+function* updateDiary(action) {
+    try {
+        const result = yield call(updateDiaryAPI, action.data);
+        yield put({
+            type: UPDATE_DIARY_SUCCESS,
+            data: result.data,
+        });
+    } catch (error) {
+        yield put({
+            type: UPDATE_DIARY_FAILURE,
             error: error.response.data,
         });
     }
@@ -96,11 +115,16 @@ function* watchDeleteDiary(){
     yield takeLatest(DELETE_DIARY_REQUEST, deleteDiary);
 }
 
+function* watchUpdateDiary(){
+    yield takeLatest(UPDATE_DIARY_REQUEST, updateDiary);
+}
+
 export default function* diarySaga() {
     yield all([
         fork(watchUploadImages),
         fork(watchAddDiary),
         fork(watchLoadDiary),
         fork(watchDeleteDiary),
+        fork(watchUpdateDiary),
     ]);
 }

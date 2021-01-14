@@ -1,11 +1,5 @@
 import produce from '../util/produce';
 
-//user 더미 데이터
-const dummyUser = {
-    id: 1,
-    nickname: 'Solac',
-  };
-
   export const initialState = {
       isLoggedIn: false,// Log or Not Log
       isLogLoading: false, // Login Lodaing
@@ -13,9 +7,16 @@ const dummyUser = {
       isSignUpDone: false, // Sign Up Done
       isSignUpLoading: false,// Sign Up Loading
       isSignUpError: null,// Sign Up Error
+      isUpdateDone: false, // UPdate Done
+      isUpdateLoading: false,// UPdate Loading
+      isUpdateError: null,// UPdate Error
 
       user: null,// User Info
   };
+
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'; // 액션의 이름
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'; // 액션의 이름
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE'; // 액션의 이름
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST'; // 액션의 이름
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS'; // 액션의 이름
@@ -32,6 +33,21 @@ export const SIGN_UP_RESET = 'SIGN_UP_RESET'; // 액션의 이름
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
+        // Update
+        case UPDATE_USER_REQUEST:{
+            draft.isUpdateLoading = true; // Update Loading On
+            break;
+        }
+        case UPDATE_USER_SUCCESS: {
+            draft.isUpdateLoading = false; //Update Loading Off
+            draft.user = action.data; // UserData Insert
+            break;
+        }
+        case UPDATE_USER_FAILURE: {
+            draft.isUpdateLoading = false; //Update Loading Off
+            draft.isUpdateError = action.error;// Error Insert
+            break;
+        }
         // Login
         case LOG_IN_REQUEST:{
             draft.isLogLoading = true; // LogIn Loading On

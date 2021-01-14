@@ -105,4 +105,60 @@ router.delete('/:deleteDate', async (req, res, next) => {
     }
 });
 
+//Update Diary
+router.put('/update', upload.none(), async (req, res, next) => {
+    try {
+        //Update Diary
+        const exDiary = await Diary.findOne({
+            where: { date: req.body.date },
+        });
+        if(!exDiary){
+            return res.status(401).send("해당 게시글을 찾을수 없습니다");
+        }
+        const diary = await Diary.update({ 
+            title: req.body.title,
+            content: req.body.content,
+        },{
+            where: { date: req.body.date },
+        });
+        //Image Insert
+        if(req.body.image) {
+            if(Array.isArray(req.body.image)) {
+                const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image})));
+                await exDiary.addImages(images);
+            } else {
+                const image = await Image.create({ src: req.body.image});
+                await exDiary.addImages(image);
+            }
+        }
+        //Image Remove
+        if(req.body.reImage) {
+            if(Array.isArray(req.body.reImage)) {
+                await Promise.all(req.body.reImage.map((v) => Image.update({
+                    DiaryId: null,
+                },{
+                    where: { id: v }, 
+                })));
+            } else {
+                await Image.update({
+                    DiaryId: null,
+                },{ 
+                    where: { id: req.body.reImage },
+                });
+            }
+        }
+        //Response Diary
+        const fullDiary = await Diary.findOne({
+            where: { date: req.body.date },
+            include: [{
+                model: Image,
+            }],
+        });
+        res.status(201).json(fullDiary);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 module.exports = router;
