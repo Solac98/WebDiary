@@ -3,19 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import { Row, Col, DatePicker, Space, Card, Button, Image, Input, Modal, Form, Popconfirm, message } from 'antd';
 import Router from 'next/router';
-import { ADD_DIARY_REQUEST, LOAD_DIARY_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, DELETE_DIARY_REQUEST, DELETE_DIARY_RESET, UPDATE_REMOVE_IMAGE, UPDATE_DIARY_REQUEST } from '../reducers/diary';
+import { ADD_DIARY_REQUEST, LOAD_DIARY_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, DELETE_DIARY_REQUEST, DELETE_DIARY_RESET, UPDATE_REMOVE_IMAGE, UPDATE_DIARY_REQUEST, DIARY_ERROR_RESET, } from '../reducers/diary';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import wrapper from '../store/configureStore';
 
 const Diary = () => {
       
     const dispatch = useDispatch();
-    const { deleteDiaryError, deleteDiaryDone, post, imagePaths, removeImage, addDriayLoading, loadDiaryError, loadDiaryLoading, addDiaryError } = useSelector((state) => state.diary);
+    const { deleteDiaryError, deleteDiaryDone, post, imagePaths, removeImage, addDriayLoading, loadDiaryError, loadDiaryLoading, addDiaryError, updateDiaryError, uploadImagesError } = useSelector((state) => state.diary);
     const { isLoggedIn } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        if(deleteDiaryError){
-            alert(deleteDiaryError);
-        }
-    }, [deleteDiaryError]);
 
     useEffect(() => {
         if(deleteDiaryDone){
@@ -31,18 +29,33 @@ const Diary = () => {
             Router.push('/');
         }
     }, [isLoggedIn]);
-
+    //Error Effect
     useEffect(() => {
         if(loadDiaryError){
             alert(loadDiaryError);
+            dispatch({
+                type: DIARY_ERROR_RESET,
+            });
         }
     }, [loadDiaryError]);
 
     useEffect(() => {
         if(addDiaryError){
             alert(addDiaryError);
+            dispatch({
+                type: DIARY_ERROR_RESET,
+            });
         }
     }, [addDiaryError]);
+
+    useEffect(() => {
+        if(deleteDiaryError){
+            alert(deleteDiaryError);
+            dispatch({
+                type: DIARY_ERROR_RESET,
+            });
+        }
+    }, [deleteDiaryError]);
 
     if (!isLoggedIn) {
         return '내 정보 로딩중...';
@@ -51,6 +64,12 @@ const Diary = () => {
     //Add Post State
     const [addTitle, setAddTitle] = useState('');//Add Post Title
     const [addContent, setAddContent] = useState('');//Add Post Contnet
+    //Open Add Post State
+    const [visible, setVisible] = useState(false);
+    //Update Post State
+    const [upVisible, setUpVisible] = useState(false);
+    //Date State
+    const [selectDate, setSelectDate] = useState('날짜 선택!');
 
     // Add Post Content Changes
     const onChangeContent = useCallback((e) => {
@@ -107,14 +126,6 @@ const Diary = () => {
         });
     }, [upVisible, selectDate, imagePaths, removeImage, addTitle, addContent,]);
 
-    //Open Add Post State
-    const [visible, setVisible] = useState(false);
-    //Update Post State
-    const [upVisible, setUpVisible] = useState(false);
-
-    //Date State
-    const [selectDate, setSelectDate] = useState('날짜 선택!');
-
     //Date Pick
     const onChangeCal = useCallback((date, dateString) => {
         setSelectDate(dateString);
@@ -137,6 +148,8 @@ const Diary = () => {
         if(date === "날짜 선택!"){
            return alert("날짜를 선택하세요!");
         }
+        setAddTitle('');
+        setAddContent('');
         setVisible(true);
     }, [visible, selectDate]);    
 
@@ -228,7 +241,7 @@ const Diary = () => {
                             footer={[<Button key="back" onClick={onCancel}>Return</Button>]} >
                             <Input.TextArea 
                                 rows={10} 
-                                placeholder="오늘의 기억남는 하루를 남겨보세요 :)"
+                                placeholder={`  오늘의 기억남는 하루를 남겨보세요 :) \n\ 해당 날짜에 글이 작성되어 있으면 글이 올라가지 않아요 :)`}
                                 onChange={onChangeContent}
                                 value={addContent}
                             />
@@ -311,5 +324,16 @@ const Diary = () => {
         </>
     );
 }
+//SSR 적용 - getServerSidProps 사용
+export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
+    //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+    context.store.dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+});
 
 export default Diary;

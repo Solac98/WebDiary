@@ -6,21 +6,22 @@ import calendar from './calendar';
 import bucket from './bucket';
 import diary from './diary';
 
-const rootReducer = combineReducers({
-    index: (state ={}, action) => {
-        switch(action.type){
-            case HYDRATE :
-                console.log('HYDRATE', action);
-                return {...state, ...action.payload};
-            default:
-                return state;
+const rootReducer = (state, action) => {
+    switch(action.type) {
+        case HYDRATE: {
+            console.log('HYDRATE', action);
+            return action.payload;
         }
-    },
-    user,
-    calendar,
-    bucket,
-    diary,
-    calendar,
-});
+        default: {
+            const combineReducer = combineReducers({
+                user,
+                calendar,
+                bucket,
+                diary,
+            });
+            return combineReducer(state, action);
+        }
+    }
+}
 
 export default rootReducer;

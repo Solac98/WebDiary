@@ -5,6 +5,11 @@ import { Calendar, Badge, DatePicker, Space, Input, Button } from 'antd';
 import Head from 'next/head';
 import Router from 'next/router';
 import { ADD_CALENDAR_REQUEST, LOAD_CALENDAR_REQUEST, REMOVE_CALENDAR_REQUEST } from '../reducers/calendar';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import wrapper from '../store/configureStore';
+
 const AllCalendar = () => {
     const dispatch = useDispatch();
     const{ isLoggedIn} = useSelector((state) => state.user);
@@ -104,5 +109,16 @@ const AllCalendar = () => {
         </>
     );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
+  //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+  context.store.dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default AllCalendar;

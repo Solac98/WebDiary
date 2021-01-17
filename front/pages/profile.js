@@ -7,8 +7,12 @@ import EditUser from '../components/EditUser';
 import EditBucket from '../components/EditBucket';
 import { useSelector, useDispatch} from 'react-redux';
 import Router from 'next/router';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOG_OUT_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import wrapper from '../store/configureStore';
+
 const CenterDiv = styled.div`
     width: 75%;
     margin : 0 auto;
@@ -76,5 +80,17 @@ const Profile = () => {
         </>
         )
 }
+
+//SSR 적용 - getServerSidProps 사용
+export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
+    //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+    context.store.dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+});
 
 export default Profile;

@@ -2,9 +2,9 @@ Solac Seed 프로젝트
 
 프로젝트 목적 - CRUD를 수행하는 웹 프로젝트를 만드는 것, Front(React, Redux( +Saga), Next)와 Back(Express), DB(Sequelize) 학습을 통해  간단한 Front와 API서버를 구현하고 Sequelize를 이용한 데이터 베이스 연결을 통하여 웹 다이어리(일기, 캘린더, 버킷리스트) 개발.
 
-현재 진행중 
-README 간단히 작성
-알바와 병행중이라 진행속도 매우 더딜 예정.
+현재 진행중 / 개발 완료.
+README 정리 후 종료 예정.
+배포 예정이 없기 때문에 배포를 위한 작업은 진행하지 않을예정.
 
 - 2021.01.05.화 - 전체 디자인 및 캘린더 프로필 부분 디자인 적용(매우 큰 수정 예상)
 
@@ -21,4 +21,7 @@ README 간단히 작성
 - 2021.01.12.화 - 캘린더 일(Day)이벤트 조회 추가 삭제 구현 / front( reducer, saga-Action, page-allcalendar(수정) ) / back( Calendar모델 생성, User-Calendar관계 형성, CalendarRouter)
 
 - 2021.01.13.수 - 버킷리스트 조회 추가 삭제 구현 / front( reducer, saga-Action, component-EditBucket(수정) ) / back( Bucket모델 생성, User-Bucket관계 형성, BucketRouter)
+
 - 2021.01.14.목 - 업데이트 구현(다이어리 + 이미지, 사용자 정보) / front( reducer, saga-Action, page-diary(수정), component-EditUser(수정) ) / back( router.update( Diary, User )생성 ) / Create Read Update Delete 구현 완료.
+
+- 2021.01.17.일 - Server Side Rendering 적용 완료. ==> page 새로고침 -> 쿠키 여부를 확인 -> wrapper의 getServerSideProps를 통해 Load My Info 액션 요청 -> 응답받은 데이터 포함하여 페이지 렌더.

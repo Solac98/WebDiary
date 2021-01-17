@@ -38,10 +38,6 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE'; // 액션의 이름
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
         case LOAD_BUCKET_REQUEST: {
-            draft.bucket = draft.bucket;
-            break;
-        }
-        case LOAD_BUCKET_REQUEST: {
             draft.loadBucketDone = false;
             draft.loadBucketLoading = true;
             draft.loadBucketError = null;

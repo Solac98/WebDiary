@@ -1,7 +1,7 @@
 import { all, delay, fork, put, takeLatest, call} from 'redux-saga/effects';
 import axios from 'axios';
 
-import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_FAILURE, LOG_OUT_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_FAILURE, SIGN_UP_SUCCESS, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE } from '../reducers/user';
+import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_FAILURE, LOG_OUT_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_FAILURE, SIGN_UP_SUCCESS, UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE } from '../reducers/user';
 import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
 
 
@@ -15,10 +15,6 @@ function* logIn(action){
         yield put({
             type: LOG_IN_SUCCESS,
             data: result.data,
-        });
-        //Bucket Request
-        yield put({
-            type: LOAD_BUCKET_REQUEST,
         });
     } catch(err) {
         console.error(err);
@@ -84,6 +80,25 @@ function* upDate(action) {
     }
 }
 
+function loadMyInfoAPI() {
+    return axios.get('/user');
+}
+
+function* loadMyInfo() {
+    try {
+        const result = yield call(loadMyInfoAPI);
+        yield put({
+            type: LOAD_MY_INFO_SUCCESS,
+            data: result.data
+        });
+    } catch (error) {
+        yield put({
+            type: LOAD_MY_INFO_FAILURE,
+            error: error.response.data,
+        });
+    }
+}
+
 // LogIn
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -100,6 +115,10 @@ function* watchSignUp() {
 function* watchUpdate() {
     yield takeLatest(UPDATE_USER_REQUEST, upDate);
 }
+//Load My Info
+function* watchLoadMyInfo() {
+    yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
 
 
 export default function* usersSaga() {
@@ -108,5 +127,6 @@ export default function* usersSaga() {
         fork(watchLogOut),
         fork(watchSignUp),
         fork(watchUpdate),
+        fork(watchLoadMyInfo),
     ]);
 }

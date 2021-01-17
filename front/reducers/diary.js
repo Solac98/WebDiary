@@ -58,6 +58,7 @@ export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS'; // 액션의 이름
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE'; // 액션의 이름
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+export const DIARY_ERROR_RESET = 'DIARY_ERROR_ERSET';
 
 
 //현재는 REQUEST에서 SUCCESS역활까지 하고있음, saga작성 시 구분하기!
@@ -113,6 +114,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
                 Images: [],
             };
             draft.imagePaths = [];
+            break;
         case UPLOAD_IMAGES_REQUEST: {
             draft.uploadImagesLoading = true;
             draft.uploadImagesDone = false;
@@ -166,6 +168,15 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         }
         case UPDATE_REMOVE_IMAGE: {
             draft.removeImage.push(action.data);
+            break;
+        }
+        case DIARY_ERROR_RESET: {
+            draft.updateDiaryError = null;
+            draft.uploadImagesError = null;
+            draft.addDiaryError = null;
+            draft.loadDiaryError = null;
+            draft.deleteDiaryError = null;
+            break;
         }
     }
 })

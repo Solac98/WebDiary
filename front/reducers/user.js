@@ -10,9 +10,16 @@ import produce from '../util/produce';
       isUpdateDone: false, // UPdate Done
       isUpdateLoading: false,// UPdate Loading
       isUpdateError: null,// UPdate Error
+      isLoadMyInfoDone: false, // Load My Info Done
+      isLoadMyInfoLoading: false,// Load My Info Loading
+      isLoadMyInfoError: null,// Load My Info Error
 
       user: null,// User Info
   };
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST'; // 액션의 이름
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS'; // 액션의 이름
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE'; // 액션의 이름
 
 export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'; // 액션의 이름
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'; // 액션의 이름
@@ -33,6 +40,27 @@ export const SIGN_UP_RESET = 'SIGN_UP_RESET'; // 액션의 이름
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch(action.type){
+        // Load My Info
+        case LOAD_MY_INFO_REQUEST:{
+            draft.isLoadMyInfoLoading = true; // LoadMyInfo Loading On
+            draft.isLoadMyInfoError = null;
+            draft.isLoadMyInfoDone = false;
+            break;
+        }
+        case LOAD_MY_INFO_SUCCESS: {
+            draft.isLoadMyInfoLoading = false; //LoadMyInfo Loading Off
+            draft.isLoadMyInfoDone = true;
+            draft.user = action.data; // IsUser -> Insert User Data, Not -> Insert Null
+            if(action.data != null){
+                draft.isLoggedIn = true;
+            }
+            break;
+        }
+        case LOAD_MY_INFO_FAILURE: {
+            draft.isLoadMyInfoLoading = false; //LoadMyInfo Loading Off
+            draft.isLoadMyInfoError = action.error;// Error Insert
+            break;
+        }
         // Update
         case UPDATE_USER_REQUEST:{
             draft.isUpdateLoading = true; // Update Loading On

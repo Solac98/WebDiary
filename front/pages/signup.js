@@ -1,6 +1,13 @@
 import 'antd/dist/antd.css';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 import styled from 'styled-components';
 import SignUp from '../components/SignUp';
+import axios from 'axios';
+import { END } from 'redux-saga';
+import wrapper from '../store/configureStore';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const CustomDiv = styled.div`
   position: absolute;
@@ -14,10 +21,34 @@ const CustomDiv = styled.div`
 
 const SignUpPage = () => {
 
+    const{ isLoggedIn } = useSelector((state) => state.user);
+    useEffect(() => {
+        if(isLoggedIn){
+            Router.push('/');
+        }
+    }, [isLoggedIn]);
+
+    if (isLoggedIn) {
+        return '로그인 확인중...';
+    }
+
     return (
         <CustomDiv>
             <SignUp />
         </CustomDiv>
     );
 }
+
+//SSR 적용 - getServerSidProps 사용
+export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
+    //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+    context.store.dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+});
+
 export default SignUpPage;

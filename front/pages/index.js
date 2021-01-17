@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import Router from 'next/router'
 import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import { Row, Col, Carousel, Button, Image, List} from 'antd';
 import Link from 'next/link';
+import axios from 'axios';
 import styled from 'styled-components';
+import { LOAD_MY_INFO_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
+import { END } from 'redux-saga';
 import { LOAD_BUCKET_REQUEST } from '../reducers/bucket';
-import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const CustomItem = styled(List.Item)`
     margin: 0;
@@ -20,21 +22,20 @@ const Home = () => {
     const{ isLoggedIn, user } = useSelector((state) => state.user);
     const { bucket } = useSelector((state) => state.bucket);
     const dispatch = useDispatch();
-    /*//Load Bucket Data
+
     useEffect(() => {
         if(isLoggedIn){
             dispatch({
                 type: LOAD_BUCKET_REQUEST,
             });
         }
-    }, [isLoggedIn, bucket] );*/
+    }, [isLoggedIn]);
 
     //LogOut Request
     const onLogOut = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         }, []);
-        //나중에 saga작업시 SUCESS부분에서 처리할 예정.
     });
 
     //IsLoggedIn Render
@@ -75,5 +76,16 @@ const Home = () => {
         </>
     );
 }
+//SSR 적용 - getServerSidProps 사용
+export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
+    //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+    context.store.dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+});
 
 export default Home;
