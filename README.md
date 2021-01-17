@@ -1,10 +1,9 @@
-Solac Seed 프로젝트
+# Solac Seed 프로젝트 - 종료
 
-프로젝트 목적 - CRUD를 수행하는 웹 프로젝트를 만드는 것, Front(React, Redux( +Saga), Next)와 Back(Express), DB(Sequelize) 학습을 통해  간단한 Front와 API서버를 구현하고 Sequelize를 이용한 데이터 베이스 연결을 통하여 웹 다이어리(일기, 캘린더, 버킷리스트) 개발.
+## 프로젝트 목적 
+CRUD를 수행하는 웹 프로젝트를 만드는 것, Front(React, Redux( +Saga), Next)와 Back(Express), DB(Sequelize) 학습을 통해  간단한 Front와 API서버를 구현하고 Sequelize를 이용한 데이터 베이스 연결을 통하여 웹 다이어리(일기, 캘린더, 버킷리스트) 개발.
 
-현재 진행중 / 개발 완료.  
-README 정리 후 종료 예정.  
-배포 예정이 없기 때문에 배포를 위한 작업은 진행하지 않을예정.
+## 일정
 
 - 2021.01.05.화 - 전체 디자인 및 캘린더 프로필 부분 디자인 적용(매우 큰 수정 예상)
 
@@ -25,3 +24,6 @@ README 정리 후 종료 예정.
 - 2021.01.14.목 - 업데이트 구현(다이어리 + 이미지, 사용자 정보) / front( reducer, saga-Action, page-diary(수정), component-EditUser(수정) ) / back( router.update( Diary, User )생성 ) / Create Read Update Delete 구현 완료.
 
 - 2021.01.17.일 - Server Side Rendering 적용 완료. ==> page 새로고침 -> 쿠키 여부를 확인 -> wrapper의 getServerSideProps를 통해 Load My Info 액션 요청 -> 응답받은 데이터 포함하여 페이지 렌더.
+
+## 프로젝트를 마무리 하며
+> 본 프로젝트를 진행하기 전 react, redux를 일부 응용 가능 할 정도로 학습하였고 next는 프로젝트를 진행하면서 같이 학습하였다. back Express 및 DB(Sequelize) 부분은 충분히 응용 가능 할 정도로 학습 하였다. 하지만 Front는 많은 학습이 필요하다고 느꼈다. next를 통해 SSR을 구현하기 위해 Front Server와 Back Server간 통신에 있어 많은 어려움이 있었다. 개인 PC에서 두 서버를 열어 테스트 한 결과 모든 기능이 정상적으로 작동하였다. next빌드 후 포트포워딩을 통해 외부에서 접속을 해 본 결과 데이터 로딩 부분에서 문제가 발생하였는데 전달 값이 쿠키와 관련 된 부분에서 발생되는 것으로 보아 쿠키 문제로 예상된다. 내부 localhost로 접속 시 문제가 없는데 포트포워딩을 통해 외부에서 접속하면 해당 문제가 발생한다. AWS같은 호스팅 서비스를 이용하여 확인을 해보고 싶었으나 배포예정이 없기에 이용할 수 없었다. 따라서 각 부분 별 추가적인 학습을 진행 후 추후에 배포 예정인 프로젝트를 진행하는 경우 반영할 계획이다.
