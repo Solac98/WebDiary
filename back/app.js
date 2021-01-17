@@ -26,7 +26,7 @@ db.sequelize.sync()
 
 passportConfig();
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://solchan.gonetis.com:8765'],
     credentials: true,
 }));
 

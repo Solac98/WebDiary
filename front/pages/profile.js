@@ -48,13 +48,6 @@ const Profile = () => {
         });
         setValue(true);
     }, [value]);
-    //로그아웃 클릭
-    const onLogOut = useCallback(() => {
-        dispatch({
-            type: LOG_OUT_REQUEST,
-        });
-        Router.push('/');
-    }, []);
 
     return (
         <>
@@ -72,7 +65,6 @@ const Profile = () => {
                             <Card.Meta
                                 avatar={<Avatar></Avatar>}
                                 title={user.nickname} />
-                            <Button onClick={onLogOut}>로그아웃</Button>
                         </CustomCard>
                         { value ? <EditBucket /> : <EditUser /> }
                     </CenterDiv>

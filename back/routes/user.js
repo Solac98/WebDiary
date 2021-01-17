@@ -7,6 +7,7 @@ const router = express.Router();
 
 //Load User
 router.get('/', async (req, res, next) => {
+    console.log("zzdasdadadafejjjjveajveajvaejvaeva");
     try {
         if(req.user){
             const user = await User.findOne({

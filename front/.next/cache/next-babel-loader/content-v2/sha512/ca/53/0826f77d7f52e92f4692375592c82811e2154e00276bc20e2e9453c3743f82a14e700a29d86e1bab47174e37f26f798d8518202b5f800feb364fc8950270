@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { enableES5, produce } from 'immer';\n\nconst pro = (...args) => {\n  enableES5();\n  return produce(...args);\n};\n\nexport default pro;","map":null,"metadata":{},"sourceType":"module"}
