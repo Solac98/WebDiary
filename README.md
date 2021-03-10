@@ -1,4 +1,4 @@
-# Solac Seed 프로젝트 - 종료
+# Solar Seed 프로젝트 - 종료
 
 ## 프로젝트 목적 
 CRUD를 수행하는 웹 프로젝트를 만드는 것, Front(React, Redux( +Saga), Next)와 Back(Express), DB(Sequelize) 학습을 통해  간단한 Front와 API서버를 구현하고 Sequelize를 이용한 데이터 베이스 연결을 통하여 웹 다이어리(일기, 캘린더, 버킷리스트) 개발.
