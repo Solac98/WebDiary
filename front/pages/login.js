@@ -42,13 +42,20 @@ const Login = () => {
 //SSR 적용 - getServerSidProps 사용
 export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
     //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
-    context.store.dispatch({
-        type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
+    /**
+     * 첫 로딩시 connect.sid가 존재하지 않기에 로드할 유저 쿠키 정보가 없어 오류를 내뱉는다.
+     * 그렇기 때문에 쿠키 connect.sid존재 여부를 우선 판단 후 유저 로드 여부를 결정한다.
+    */
+    if(context.req.headers.cookie != undefined) {
+        const cookie = context.req ? context.req.headers.cookie : '';
+        axios.defaults.headers.Cookie = cookie; //요청 헤더에 쿠키 넣기.
+        context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+        });
+        context.store.dispatch(END);
+        await context.store.sagaTask.toPromise();
+    }
+    
 });
 
 export default Login;

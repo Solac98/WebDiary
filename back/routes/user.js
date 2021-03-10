@@ -110,4 +110,10 @@ router.put('/update', async (req, res, next) => {
     }
 });
 
+//test
+router.get('/test', async (req, res, next) => {
+    const user = await User.findAll();
+    res.status(201).json(user);
+})
+
 module.exports = router;

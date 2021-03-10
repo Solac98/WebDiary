@@ -79,14 +79,20 @@ const Home = () => {
 //SSR 적용 - getServerSidProps 사용
 export const getServerSideProps = wrapper.getServerSideProps( async (context) => {
     //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
-    console.log(context.req.headers.cookie);
-    const cookie = context.req ? context.req.headers.cookie : '';
-    axios.defaults.headers.Cookie = cookie;//cookie; //요청 헤더에 쿠키 넣기.
-    context.store.dispatch({
-        type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch(END);
-    await context.store.sagaTask.toPromise();
+ 
+    if(context.req.headers.cookie != undefined) {
+        console.log(context.req.headers.cookie);
+        const cookie = context.req ? context.req.headers.cookie : '';
+        axios.defaults.headers.Cookie = cookie;//cookie; //요청 헤더에 쿠키 넣기.
+        context.store.dispatch({
+            type: LOAD_MY_INFO_REQUEST,
+        });
+        context.store.dispatch(END);
+        await context.store.sagaTask.toPromise();
+    } else {
+        console.log("none ck");
+    }
+    
 });
 
 export default Home;

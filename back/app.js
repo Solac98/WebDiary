@@ -26,7 +26,7 @@ db.sequelize.sync()
 
 passportConfig();
 app.use(cors({
-    origin: ture,
+    origin: true,
     credentials: true,
 }));
 
@@ -39,6 +39,7 @@ app.use(session({
     resave: false,
     secret: process.env.COOKIE_SECRET,
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
