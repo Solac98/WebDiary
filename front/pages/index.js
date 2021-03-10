@@ -81,7 +81,7 @@ export const getServerSideProps = wrapper.getServerSideProps( async (context) =>
     //Brower 에서 요청이 아닌 Front -> Back이므로 쿠키를 전달해줘야 한다.
  
     if(context.req.headers.cookie != undefined) {
-        console.log(context.req.headers.cookie);
+        //console.log(context.req.headers.cookie); connect.sid 확인용 코드
         const cookie = context.req ? context.req.headers.cookie : '';
         axios.defaults.headers.Cookie = cookie;//cookie; //요청 헤더에 쿠키 넣기.
         context.store.dispatch({
